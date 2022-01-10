@@ -1,8 +1,8 @@
 [package]
 name = "nanopre"
-version = "0.1.0"
+version = "0.1.1"
 description = "A a zero-dependency, no-unsafe implementation of a minimal C-style text preprocessor."
 edition = "2021"
 repository = "https://github.com/AlphaModder/nanopre"
-license-file = "LICENSE"
+license = "Apache-2.0"
 readme = "README.md"
