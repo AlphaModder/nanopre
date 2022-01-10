@@ -5,3 +5,4 @@ description = "A a zero-dependency, no-unsafe implementation of a minimal C-styl
 edition = "2021"
 repository = "https://github.com/AlphaModder/nanopre"
 license-file = "LICENSE"
+readme = "README.md"

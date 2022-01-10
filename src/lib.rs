@@ -60,7 +60,7 @@ impl From<std::io::Error> for Error {
     fn from(error: std::io::Error) -> Self { Error::Io(error) }
 }
 
-pub fn process_buf<'b, 'c, B: BufRead>(b: &'b mut B, ctx: &'c mut Context) -> Result<String, Error> {
+pub fn process_buf<B: BufRead>(b: &mut B, ctx: &mut Context) -> Result<String, Error> {
     #[derive(Copy, Clone)]
     enum FoundBranch { NotYet, Now, Already }
 
@@ -117,7 +117,7 @@ pub fn process_buf<'b, 'c, B: BufRead>(b: &'b mut B, ctx: &'c mut Context) -> Re
     Ok(output)
 }
 
-pub fn process_str<'s, 'c>(s: &'s str, ctx: &'c mut Context) -> Result<String, Error> { process_buf(&mut s.as_bytes(), ctx) }
+pub fn process_str(s: &str, ctx: &mut Context) -> Result<String, Error> { process_buf(&mut s.as_bytes(), ctx) }
 
 #[test]
 fn basic_substitution() {
