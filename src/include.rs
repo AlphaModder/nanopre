@@ -42,7 +42,7 @@ fn include_works() {
         _ => Err(())
     };
 
-    let mut ctx = Context::new_with(includes);
+    let mut ctx = Context::with_includes(includes);
 
     assert_process!(&mut ctx, "line1\n#include foo\nline3", Ok("line1\nline2\nline3"));
 }

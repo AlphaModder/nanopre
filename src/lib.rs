@@ -38,11 +38,11 @@ pub struct Context<I = NoIncludes> {
 }
 
 impl Context {
-    pub fn new() -> Context { Self::new_with(NoIncludes) }
+    pub fn new() -> Context { Self::with_includes(NoIncludes) }
 }
 
 impl<I> Context<I> {
-    pub fn new_with(includes: I) -> Context<I> { 
+    pub fn with_includes(includes: I) -> Context<I> { 
         Context { macros: Macros::new(), includes } 
     }
 
