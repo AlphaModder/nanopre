@@ -3,7 +3,7 @@ use crate::Error;
 pub enum Token { LeftParen, RightParen, And, Or, Not, Zero, One }
 use Token::*;
 
-fn tokenize(mut str: &str) -> Result<Vec<Token>, Error> {
+fn tokenize<I>(mut str: &str) -> Result<Vec<Token>, Error<I>> {
     let mut tokens = Vec::new();
     loop {
         str = str.trim_start();
@@ -21,7 +21,7 @@ fn tokenize(mut str: &str) -> Result<Vec<Token>, Error> {
     }
 }
 
-fn eval_inner(tokens: &mut &[Token], paren: bool) -> Result<bool, Error> {
+fn eval_inner<I>(tokens: &mut &[Token], paren: bool) -> Result<bool, Error<I>> {
     enum Op { Set, And, Or }
 
     let (mut result, mut op) = (false, Op::Set);
@@ -51,22 +51,22 @@ fn eval_inner(tokens: &mut &[Token], paren: bool) -> Result<bool, Error> {
     }
 }
 
-pub fn eval(expr: &str) -> Result<bool, Error> {
+pub fn eval<I>(expr: &str) -> Result<bool, Error<I>> {
     let mut tokens: &[_] = &tokenize(expr)?;
     eval_inner(&mut tokens, false)
 }
 
 #[test]
 fn tokenize_tests() {
-    assert!(matches!(tokenize("    0 1 && ||  ( ) ! ").as_deref(), Ok(&[Zero, One, And, Or, LeftParen, RightParen, Not])));
-    assert!(matches!(tokenize("!)   1&&   0||   (").as_deref(), Ok(&[Not, RightParen, One, And, Zero, Or, LeftParen])));
-    assert!(matches!(tokenize("0    && 1 + 1    "), Err(_)));
-    assert!(matches!(tokenize("0    && x     || 1"), Err(_)));
+    assert!(matches!(tokenize::<()>("    0 1 && ||  ( ) ! ").as_deref(), Ok(&[Zero, One, And, Or, LeftParen, RightParen, Not])));
+    assert!(matches!(tokenize::<()>("!)   1&&   0||   (").as_deref(), Ok(&[Not, RightParen, One, And, Zero, Or, LeftParen])));
+    assert!(matches!(tokenize::<()>("0    && 1 + 1    "), Err(_)));
+    assert!(matches!(tokenize::<()>("0    && x     || 1"), Err(_)));
 }
 
 #[test]
 fn eval_tests() {
-    let eval = |s| eval(s).map_err(|_| ());
+    let eval = |s| eval::<()>(s).map_err(|_| ());
     assert_eq!(eval("0"), Ok(false));
     assert_eq!(eval("1"), Ok(true));
     assert_eq!(eval("1 || 0"), Ok(true));
